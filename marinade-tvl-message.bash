@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+set -e
 
 function fmt {
     numfmt --to si --round nearest
@@ -9,11 +9,11 @@ function fmt {
 ARROW_UP=▲
 ARROW_DOWN=▼
 
-echo "TVL: $(./marinade-tvl.bash | fmt)"
+echo "TVL: $(./marinade-tvl.bash | fmt || exit 1)"
 
 for PERIOD in "24 hours" "7 days"
 do
-    TVL_DIFF_VALUE=$(./marinade-tvl-diff.bash "$PERIOD")
+    TVL_DIFF_VALUE=$(./marinade-tvl-diff.bash "$PERIOD" || exit 1)
 
     if ((TVL_DIFF_VALUE < 0))
     then

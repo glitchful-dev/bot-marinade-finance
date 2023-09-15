@@ -18,8 +18,8 @@ jobs:
       env:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
       run: |
-        set -o errexit
+        set -e
         curl -X POST \
           -H 'Content-Type: application/json' \
-          -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash)"'"}' \
+          -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash || exit 1)"'"}' \
           https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage

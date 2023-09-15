@@ -1,6 +1,11 @@
 #!/bin/bash
 
-set -o errexit
+set -e
+
+DATE_CMD="date"
+if [[ "$(uname)" == "Darwin" ]]; then
+    DATE_CMD="gdate"
+fi
 
 function tvl {
     curl -sfLS -X GET "https://api.marinade.finance/tlv?time=$1" | jq '.staked_sol + .marinade_native_stake_sol | round'
@@ -15,10 +20,10 @@ if [[ -z $PERIOD ]]; then
 fi
 
 ISO_FMT="%Y-%m-%dT%H:%M:%SZ"
-TIME_THEN=$(gdate -d "$PERIOD ago" -u "+$ISO_FMT")
-TIME_NOW=$(gdate -u "+$ISO_FMT")
+TIME_THEN=$($DATE_CMD -d "$PERIOD ago" -u "+$ISO_FMT" || exit 1)
+TIME_NOW=$($DATE_CMD -u "+$ISO_FMT" || exit 1)
 
-TVL_THEN=$(tvl "$TIME_THEN")
-TVL_NOW=$(tvl "$TIME_NOW")
+TVL_THEN=$(tvl "$TIME_THEN" || exit 1)
+TVL_NOW=$(tvl "$TIME_NOW" || exit 1)
 
 echo $(( TVL_NOW - TVL_THEN ))
