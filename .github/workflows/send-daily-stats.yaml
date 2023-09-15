@@ -1,0 +1,23 @@
+name: Send daily stats
+
+on:
+  schedule:
+    - cron: '50 8 * * *'
+jobs:
+  build:
+    name: Send daily stats
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get prices
+      env:
+        TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+      run: |
+        curl -X POST \
+          -H 'Content-Type: application/json' \
+          -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash)"'"}' \
+          https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage

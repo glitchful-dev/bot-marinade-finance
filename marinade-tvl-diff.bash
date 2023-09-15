@@ -3,7 +3,7 @@
 set -e
 
 function tvl {
-    curl -sfLS -X GET "https://api.marinade.finance/tlv?time=$1" | jq '.total_virtual_staked_sol | round'
+    curl -sfLS -X GET "https://api.marinade.finance/tlv?time=$1" | jq '.staked_sol + .marinade_native_stake_sol | round'
 }
 
 PERIOD="$1" # "e.g. 1 week, 30 days, 1 year"
