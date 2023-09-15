@@ -14,10 +14,11 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Get prices
+    - name: Send tg message
       env:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
       run: |
+        set -e
         curl -X POST \
           -H 'Content-Type: application/json' \
           -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash)"'"}' \
