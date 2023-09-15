@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+
+set -o errexit
 
 function fmt {
     numfmt --to si --round nearest

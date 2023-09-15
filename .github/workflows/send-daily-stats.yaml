@@ -18,7 +18,7 @@ jobs:
       env:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
       run: |
-        set -e
+        set -o errexit
         curl -X POST \
           -H 'Content-Type: application/json' \
           -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash)"'"}' \
