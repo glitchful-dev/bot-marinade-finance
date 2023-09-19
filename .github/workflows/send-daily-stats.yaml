@@ -3,7 +3,7 @@ name: Send daily stats
 on:
   workflow_dispatch:
   schedule:
-    - cron: '50 7 * * *'
+    - cron: '50 6 * * *'
 jobs:
   build:
     name: Send daily stats
