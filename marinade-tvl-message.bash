@@ -3,13 +3,13 @@
 set -e
 
 function fmt {
-    numfmt --to si --round nearest
+    numfmt --to si --round down $@
 }
 
 ARROW_UP=▲
 ARROW_DOWN=▼
 
-echo "TVL: $(./marinade-tvl.bash | fmt || exit 1)"
+echo "TVL: $(./marinade-tvl.bash | fmt --format %.2f || exit 1)"
 
 for PERIOD in "24 hours" "7 days"
 do
