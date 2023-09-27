@@ -17,22 +17,8 @@ jobs:
     - name: Check Conditions
       id: check_conditions
       run: |
-        if [[ ${{ github.event.workflow_run.conclusion }} == "success" ]]; then
-          echo "Conditions met, enabling workflow."
-          echo "::set-env name=DISABLE_WORKFLOW::false"
-        else
-          echo "Conditions not met, disabling workflow."
-          echo "::set-env name=DISABLE_WORKFLOW::true"
-        fi
-    - name: Disable Workflow
-      if: steps.check_conditions.outputs.DISABLE_WORKFLOW == 'true'
-      run: |
-        echo "This workflow is disabled."
-        exit 0
-    - name: Enable Workflow
-      if: steps.check_conditions.outputs.DISABLE_WORKFLOW == 'false'
-      run: |
-        echo "This workflow is enabled. You can add your job steps here."
+        gh workflow disable 'Check milestone'
+        echo 'foo'
 
     # - name: Send tg message
     #   env:
