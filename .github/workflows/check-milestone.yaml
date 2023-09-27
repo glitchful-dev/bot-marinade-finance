@@ -18,7 +18,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        if (( $(./marinade-tvl-message.bash || exit 1) >= 8000000 ))
+        if (( $(./marinade-tvl.bash || exit 1) >= 8000000 ))
         then
           gh workflow disable 'Check milestone'
           echo 'Milestone reached!'
