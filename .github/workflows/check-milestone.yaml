@@ -21,11 +21,11 @@ jobs:
       run: |
         set -e
 
-        if (( $(./marinade-tvl.bash || exit 1) >= 7000000 ))
+        if (( $(./marinade-tvl.bash || exit 1) >= 8000000 ))
         then
           gh workflow disable 'Check milestone'
           echo 'Milestone reached!'
-          echo curl -X POST \
+          curl -X POST \
             -H 'Content-Type: application/json' \
             -d '{"chat_id": "@marinade_stats_channel", "text": "🔥🔥🔥 8 M SOL milestone reached 🔥🔥🔥"}' \
             https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage
