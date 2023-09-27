@@ -1,0 +1,45 @@
+name: Check milestone
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10/15 * * * *'
+jobs:
+  build:
+    name: Check milestone
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check Conditions
+      id: check_conditions
+      run: |
+        if [[ ${{ github.event.workflow_run.conclusion }} == "success" ]]; then
+          echo "Conditions met, enabling workflow."
+          echo "::set-env name=DISABLE_WORKFLOW::false"
+        else
+          echo "Conditions not met, disabling workflow."
+          echo "::set-env name=DISABLE_WORKFLOW::true"
+        fi
+    - name: Disable Workflow
+      if: steps.check_conditions.outputs.DISABLE_WORKFLOW == 'true'
+      run: |
+        echo "This workflow is disabled."
+        exit 0
+    - name: Enable Workflow
+      if: steps.check_conditions.outputs.DISABLE_WORKFLOW == 'false'
+      run: |
+        echo "This workflow is enabled. You can add your job steps here."
+
+    # - name: Send tg message
+    #   env:
+    #     TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+    #   run: |
+    #     set -e
+    #     # echo curl -X POST \
+    #     #   -H 'Content-Type: application/json' \
+    #     #   -d '{"chat_id": "@marinade_stats_channel", "text": "'"$(./marinade-tvl-message.bash || exit 1)"'"}' \
+    #     #   https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage
