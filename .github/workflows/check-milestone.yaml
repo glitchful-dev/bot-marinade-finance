@@ -14,12 +14,17 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Check Conditions
+    - name: Check Milestone
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh workflow disable 'Check milestone'
-        echo 'foo'
+        if (( $(./marinade-tvl-message.bash || exit 1) >= 8000000 ))
+        then
+          gh workflow disable 'Check milestone'
+          echo 'Milestone reached!'
+        else
+          echo 'Milestone not reached yet.'
+        fi
 
     # - name: Send tg message
     #   env:
