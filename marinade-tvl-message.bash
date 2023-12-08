@@ -11,7 +11,7 @@ ARROW_DOWN=▼
 
 echo "TVL: $(./marinade-tvl.bash | fmt --format %.2f || exit 1)"
 
-for PERIOD in "24 hours" "7 days"
+for PERIOD in "24 hours" "7 days" "30 days"
 do
     TVL_DIFF_VALUE=$(./marinade-tvl-diff.bash "$PERIOD" || exit 1)
 
